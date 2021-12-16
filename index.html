@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Pdf Mapper</title>
+	<script type='text/javascript' src='//code.jquery.com/jquery-1.9.1.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<script src="js/typeahead.bundle.js"></script> 
+	<script src="js/CentroidiItalia.js"></script> 
+    <style>
+.bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+      }
+
+@media (min-width: 768px) {
+	.bd-placeholder-img-lg {
+	font-size: 3.5rem;
+}
+      }
+      
+html {
+	height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 580px;
+  height: 50px;
+  padding: 8px 12px;
+  font-size: 24px;
+  line-height: 30px;
+  border: 2px solid #ccc;
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  outline: none;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #0097cf;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-menu {
+  width: 422px;
+  margin: 12px 0;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.tt-suggestion:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+    </style>
+</head>
+<body class="text-center">
+	<div class="container">
+	<form class="form" onsubmit='open_mapper();return false;'>
+  		<h1 class="h3 mb-3 font-weight-normal">Pdf MAPPER</h1>
+  		<div id="comunidiv" class="row">
+			<div class="col-sm">
+				<input type="text" id="comune" class="typeahead tt-input" placeholder="Comune di ..." required autofocus><br/><br/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<input type="text" id="link" class="typeahead tt-input" placeholder="Indirizzo file Pdf da mappare" required><br/><br/>
+			</div>
+		</div>
+		Datum geoedetico di proiezione della tavola Pdf
+		<div class="row">
+			<div class="col-sm">  
+				<select class="typeahead col-6" id="projection">
+					<option value="WGS84 / UTM Zona 32N">WGS84 / UTM Zona 32N</option>
+					<option value="Cassini-Soldner Biella-Vercelli">Cassini-Soldner Biella-Vercelli</option>
+					<option value="Monte Mario /Italia zona 1">Monte Mario /Italia zona 1</option>
+					<option value="Monte Mario /Italia zona 2">Monte Mario /Italia zona 2</option>
+					<option value="ED50 / UTM Zona 32N">ED50 / UTM Zona 32N</option>
+				</select>
+				<br/><br/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<button class="btn btn-lg btn-primary" type="submit">Mappa !</button>
+			</div>
+		</div>
+	</form>
+	</div>
+	<script src="js/main_mapper.js"></script> 
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+		<title>Pdf Mapper</title>
+		<script type='text/javascript' src='//code.jquery.com/jquery-1.9.1.js'></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+		<link href="https://api.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.css" rel="stylesheet">
+		<script src="https://api.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js"></script>
+		<script src='js/mapbox-gl-opacity.js'></script>
+		<link rel="stylesheet" href="css/mapbox-gl-opacity.css">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.6.2/proj4-src.min.js"></script>
+		<link rel="stylesheet" href="css/style.css">
+		<script type="text/javascript" src="js/datum.js"></script>
+	</head>
+	<body>
+		<img src="" id="ima2" style="display:none">
+		<div class="row" style="margin-left:6px" id="geopulsanti">
+			<div style="margin:6px">
+				<button type="button" class="btn btn-primary btn-sm" onclick="riscala(2000)">1:2000</button>
+			</div>
+			<div style="margin:6px">
+				<button type="button" class="btn btn-primary btn-sm" onclick="riscala(5000)">1:5000</button>
+			</div>
+			<div style="margin:6px">
+				<button type="button" class="btn btn-primary btn-sm" onclick="riscala(10000)">1.10.000</button>
+			</div>
+			<div style="margin:6px">
+				<input class="form-control-sm" type="text" placeholder="1:?" aria-label="default input example" onchange="riscala(this.value)" style="width:100px">
+			</div>
+			<div style="margin:6px">
+				<button type="button" class="btn btn-primary btn-sm" onclick="ruota()">Ruota 90°</button>
+			</div>
+			<div style="margin:6px">
+				<input id="rotaz" class="form-control-sm" type="text" placeholder="" aria-label="default input example" onchange="riscala(this.value)" value="0" style="width:60px">
+			</div>
+			<div style="margin:6px">
+				<button id="geolink" type="button" class="btn btn-warning btn-sm" onclick="$('#popup').modal('show');">Visualizza Link</button>
+			</div>
+		</div>
+		
+		<div id="map"></div><br/>
+
+		<center><div id="wheel" style="position: absolute;top: 50%;left: 50%;z-index:999999"><img src="./img/ajax-loader-bar.gif" /></div></center>
+
+		<div  id="popup" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<center><h4>Il link per accedere alla tavola georeferenziata è :</h4></center>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="linkdef"></div>
+						<br/><button type="button" class="btn btn-warning btn-sm" onclick="copyData(linkdef)">Copia link</button>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type='text/javascript' src="js/mapper.js"></script>
+	</body>
+</html>
